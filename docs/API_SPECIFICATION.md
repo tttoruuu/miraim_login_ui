@@ -35,12 +35,13 @@ POST /auth/login
 ```json
 {
   "success": true,
-  "message": "ログインに成功しました",
+  "message": "おかえりなさい！今日も素敵な1日にしましょう♪",
   "data": {
     "user": {
       "id": "user123",
       "email": "user@example.com",
       "name": "田中太郎",
+      "dating_status": "結婚相談所利用中",
       "created_at": "2024-01-01T00:00:00Z"
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -52,7 +53,7 @@ POST /auth/login
 ```json
 {
   "success": false,
-  "message": "メールアドレスまたはパスワードが間違っています",
+  "message": "メールアドレスまたはパスワードが間違っています。もう一度確認してください。",
   "error": "INVALID_CREDENTIALS"
 }
 ```
@@ -61,7 +62,7 @@ POST /auth/login
 ```json
 {
   "success": false,
-  "message": "入力内容に不備があります",
+  "message": "入力内容を確認してください。",
   "error": "VALIDATION_ERROR",
   "details": [
     {
@@ -93,6 +94,12 @@ POST /auth/register
   "password_confirmation": "password123",
   "name": "新規ユーザー",
   "birth_date": "1990-01-01",
+  "dating_status": "結婚相談所利用中",
+  "occupation": "エンジニア",
+  "birthplace": "東京都",
+  "residence": "神奈川県",
+  "hobbies": "読書、映画鑑賞",
+  "weekend_activities": "カフェ巡り、散歩",
   "terms_agreed": true
 }
 ```
@@ -103,12 +110,19 @@ POST /auth/register
 ```json
 {
   "success": true,
-  "message": "アカウントを作成しました",
+  "message": "アカウントを作成しました！素敵な出会いが待っています♪",
   "data": {
     "user": {
       "id": "user456",
       "email": "newuser@example.com",
       "name": "新規ユーザー",
+      "birth_date": "1990-01-01",
+      "dating_status": "結婚相談所利用中",
+      "occupation": "エンジニア",
+      "birthplace": "東京都",
+      "residence": "神奈川県",
+      "hobbies": "読書、映画鑑賞",
+      "weekend_activities": "カフェ巡り、散歩",
       "created_at": "2024-01-01T00:00:00Z"
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -120,7 +134,7 @@ POST /auth/register
 ```json
 {
   "success": false,
-  "message": "このメールアドレスは既に使用されています",
+  "message": "このメールアドレスは既に使用されています。別のメールアドレスをお試しください。",
   "error": "EMAIL_ALREADY_EXISTS"
 }
 ```
@@ -129,7 +143,7 @@ POST /auth/register
 ```json
 {
   "success": false,
-  "message": "入力内容に不備があります",
+  "message": "入力内容を確認してください。お手数をおかけしますが、修正をお願いします。",
   "error": "VALIDATION_ERROR",
   "details": [
     {
@@ -146,11 +160,15 @@ POST /auth/register
     },
     {
       "field": "name",
-      "message": "名前を入力してください"
+      "message": "お名前（ニックネーム可）を入力してください"
     },
     {
       "field": "birth_date",
-      "message": "生年月日を正しい形式で入力してください"
+      "message": "生年月日を正しい形式で入力してください（例：1990-01-01）"
+    },
+    {
+      "field": "dating_status",
+      "message": "婚活状況を選択してください"
     },
     {
       "field": "terms_agreed",
@@ -209,7 +227,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```json
 {
   "success": true,
-  "message": "ログアウトしました"
+  "message": "お疲れ様でした！またお会いできるのを楽しみにしています♪"
 }
 ```
 
@@ -235,7 +253,7 @@ POST /auth/password-reset
 ```json
 {
   "success": true,
-  "message": "パスワードリセット用のメールを送信しました"
+  "message": "パスワードリセット用のメールを送信しました。メールをご確認ください。"
 }
 ```
 
@@ -265,30 +283,59 @@ POST /auth/password-reset
 
 ## 📝 バリデーションルール
 
-### メールアドレス
+### **必須項目**
+
+#### メールアドレス
 - 必須
 - 有効なメールアドレス形式
 - 最大254文字
 
-### パスワード
+#### パスワード
 - 必須
 - 8文字以上
 - 英数字を含む
 - 最大128文字
 
-### 名前
+#### 名前（ニックネーム可）
 - 必須
 - 2文字以上
 - 最大50文字
+- ニックネームでも可
 
-### 生年月日
+#### 生年月日
 - 必須
 - YYYY-MM-DD形式
 - 18歳以上（成人年齢）
 
-### 利用規約同意
+#### 婚活状況
+- 必須
+- 選択式：「結婚相談所利用中」「マッチングアプリ利用中」「その他」
+
+#### 利用規約同意
 - 必須
 - `true`である必要がある
+
+### **任意項目**
+
+#### 職業
+- 任意
+- 最大100文字
+
+#### 出身地
+- 任意
+- 最大50文字
+
+#### 居住場所
+- 任意
+- 最大50文字
+
+#### 趣味
+- 任意
+- 最大200文字
+
+#### 休日の過ごし方
+- 任意
+- 最大200文字
 
 ---
 
